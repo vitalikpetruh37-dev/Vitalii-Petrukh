@@ -1,71 +1,66 @@
 import { GoogleGenAI } from "@google/genai";
 
-const SYSTEM_INSTRUCTION_BASE = `
-Jesteś wirtualnym asystentem firmy Vit-Went. Twoim celem jest pomoc klientom w uzyskaniu informacji oraz wstępnej wyceny.
+const SYSTEM_INSTRUCTION = `
+Jesteś asystentem firmy Vit-Went.
+Lokalizacja: Warszawa (Gen. Tadeusza Pełczyńskiego 9).
+NIP: 5223313135.
+Telefon: +48 660 321 872.
 
-O FIRMIE:
-Firma specjalizuje się WYŁĄCZNIE w profesjonalnym MONTAŻU (INSTALACJI). Nie sprzedajemy samych urządzeń bez montażu.
-Adres: Gen. Tadeusza Pełczyńskiego 9, 01-471 Warszawa.
-Kontakt: +48 660 321 872, vitwent@gmail.com
-Godziny: Pn-Pt 8-18, Sob 9-14.
-
-USŁUGI:
-1. Wentylacja i Rekuperacja
-2. Klimatyzacja i Chłodnictwo
-3. Instalacje Kanalizacyjne
+Specjalizacja: WYŁĄCZNIE MONTAŻ i usługi wykonawcze.
+Usługi:
+1. Wentylacja i Rekuperacja (montaż)
+2. Klimatyzacja i Chłodnictwo (montaż)
+3. Instalacje Kanalizacyjne (wykonawstwo)
 4. Rozbiórki i Demontaż
 
-PROTOKÓŁ WYCENY (REAL-TIME QUOTING):
-Jeśli klient zapyta o cenę lub wycenę, NIE podawaj od razu kwoty. Musisz zebrać informacje krok po kroku:
+WAŻNE:
+- Jeśli klient pisze po polsku, odpowiadaj po polsku.
+- Jeśli klient pisze po ukraińsku (українська), odpowiadaj po ukraińsku.
+- Jeśli klient pisze po angielsku, odpowiadaj po angielsku.
+- Jeśli klient pisze po niemiecku, odpowiadaj po niemiecku.
 
-KROK 1: Zapytaj o rodzaj usługi (jeśli nie podano).
-KROK 2: Zapytaj o lokalizację (Czy to Warszawa i okolice?).
-KROK 3: Zapytaj o szczegóły techniczne:
-   - Klimatyzacja: Metraż pomieszczenia, długość instalacji (odległość jednostek), czy to dom czy mieszkanie?
-   - Rekuperacja: Metraż domu, stan budowy (surowy/zamieszkały).
-   - Rozbiórki/Kanalizacja: Opis zakresu prac.
+Jeśli klient pyta o wycenę:
+1. Zapytaj o: rodzaj usługi, lokalizację i metraż/ilość punktów.
+2. Poinformuj, że ostateczną wycenę przygotuje specjalista po kontakcie telefonicznym.
+3. Zachęć do zadzwonienia pod numer +48 660 321 872.
 
-KROK 4: Dopiero po uzyskaniu odpowiedzi, podaj SZACUNKOWE widełki cenowe (Cennik BAZOWY poniżej) lub poinformuj, że skontaktuje się specjalista.
-
-CENNIK BAZOWY (TYLKO SZACUNKI MONTAŻU, Ceny Netto):
-- Montaż Klimatyzacji (podstawowy, do 3mb instalacji): od 1200 PLN - 1500 PLN.
-- Przegląd klimatyzacji: od 250 PLN.
-- Montaż Rekuperacji (robocizna): od 150 PLN za punkt/nawiew.
-- Rozbiórki/Demontaż: Wycena TYLKO indywidualna po wizji lokalnej (ok. 50-200 PLN/m2 zależnie od materiału).
-- Instalacje kanalizacyjne: Wycena indywidualna.
-
-ZAWSZE dodaj adnotację: "To jest wstępny szacunek. Ostateczna cena zależy od wizji lokalnej. Czy mam poprosić specjalistę o kontakt telefoniczny?"
-
-JĘZYK I STYL:
-- Dostosuj język do użytkownika (PL/EN/UA).
-- Bądź profesjonalny, ale pomocny.
-- Odpowiadaj zwięźle.
+Nie podawaj zmyślonych cen. Bądź uprzejmy i konkretny.
 `;
 
-export const sendMessageToGemini = async (history: string[], newMessage: string, lang: string = 'pl'): Promise<string> => {
+export const sendMessageToGemini = async (history: string[], newMessage: string): Promise<string> => {
   try {
+    if (!process.env.API_KEY) {
+      console.warn("API Key is missing in environment variables.");
+      return "System czatu jest obecnie niedostępny. Proszę o kontakt telefoniczny: +48 660 321 872.";
+    }
+
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     const prompt = `
-    Context: User language is ${lang}. Reply in ${lang}.
-    Chat History:
+    Historia:
     ${history.join('\n')}
     
-    User: ${newMessage}
+    Klient: ${newMessage}
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-pro-preview',
       contents: prompt,
       config: {
-        systemInstruction: SYSTEM_INSTRUCTION_BASE,
+        systemInstruction: SYSTEM_INSTRUCTION,
         temperature: 0.7,
       }
     });
 
-    return response.text || "Error.";
-  } catch (error) {
+    return response.text || "Proszę o kontakt telefoniczny / Будь ласка, зв'яжіться з нами: +48 660 321 872.";
+  } catch (error: any) {
+    // Handle 429 Resource Exhausted (Quota exceeded) gracefully
+    if (error.status === 429 || (error.message && error.message.includes('429'))) {
+      console.warn("Gemini API Quota Exceeded. Returning fallback message.");
+      return "Przepraszam, chwilowo nie mogę odpisać (limit zapytań). Proszę o kontakt telefoniczny: +48 660 321 872.";
+    }
+
     console.error("Gemini API Error:", error);
-    throw new Error("Connection error.");
+    return "Przepraszam, mam problem z połączeniem. Proszę zadzwonić / Вибачте, проблема з'єднання. Зателефонуйте: +48 660 321 872.";
   }
 };

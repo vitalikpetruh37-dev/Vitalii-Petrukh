@@ -1,16 +1,46 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vit-Went | Nowoczesna Wentylacja i Klimatyzacja</title>
+    <title>Vit-Went | Profesjonalny Montaż Wentylacji</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
       html {
         scroll-behavior: smooth;
+        scroll-padding-top: 100px;
       }
       body { font-family: 'Inter', sans-serif; }
+      
+      /* Force interactive elements to respond */
+      a, button {
+        cursor: pointer;
+        pointer-events: auto !important;
+      }
+      
+      /* CRITICAL FIX: Force inputs to be editable and clickable */
+      input, textarea, select {
+        pointer-events: auto !important;
+        user-select: text !important;
+        -webkit-user-select: text !important;
+        position: relative;
+        z-index: 50; /* Ensure inputs sit above backgrounds */
+        background-color: white !important; /* Force visibility */
+        opacity: 1 !important;
+      }
+
+      /* Fix for mobile touch issues */
+      button, input[type="submit"], input[type="reset"] {
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+      }
+
       /* Custom scrollbar for chat */
       .scrollbar-hide::-webkit-scrollbar {
           display: none;

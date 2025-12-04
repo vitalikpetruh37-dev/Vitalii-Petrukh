@@ -1,136 +1,131 @@
-import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Send, Clock, FileText } from 'lucide-react';
+import React from 'react';
+import { Phone, Mail, MapPin, Clock, Map, Facebook, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const ContactForm: React.FC = () => {
   const { t } = useLanguage();
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-  };
 
   return (
-    <section id="contact" className="py-24 relative scroll-mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex flex-col lg:flex-row">
+    <section id="contact" className="py-20 bg-white relative overflow-hidden scroll-mt-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30">
+        <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200 flex flex-col lg:flex-row">
           
           {/* Info Panel */}
-          <div className="lg:w-5/12 p-10 lg:p-16 bg-slate-900/80 border-r border-white/5 flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] -mr-16 -mt-16 pointer-events-none"></div>
-            
+          <div className="lg:w-5/12 p-10 lg:p-16 text-white flex flex-col justify-between bg-slate-900 relative z-20">
             <div className="relative z-10">
-              <h2 className="text-3xl font-bold text-white mb-6">{t.contact.title}</h2>
-              <p className="text-slate-400 mb-10 leading-relaxed">
-                {t.contact.desc}
+              <h2 className="text-3xl font-bold mb-2">{t.contact.title}</h2>
+              <p className="text-slate-400 mb-8">
+                {t.contact.subtitle}
               </p>
               
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="bg-blue-500/10 p-3 rounded-xl text-blue-400 border border-blue-500/20">
+                  <div className="bg-white/10 p-3 rounded-lg text-blue-400">
                     <Phone size={24} />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">{t.contact.call}</p>
-                    <p className="font-semibold text-white text-lg">+48 660 321 872</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wider">{t.contact.phone}</p>
+                    <a href="tel:+48660321872" className="font-semibold text-lg hover:text-blue-400 transition-colors pointer-events-auto">+48 660 321 872</a>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="bg-cyan-500/10 p-3 rounded-xl text-cyan-400 border border-cyan-500/20">
+                  <div className="bg-white/10 p-3 rounded-lg text-blue-400">
                     <Mail size={24} />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">{t.contact.email}</p>
-                    <p className="font-semibold text-white">vitwent@gmail.com</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wider">{t.contact.email}</p>
+                    <a href="mailto:vitwent@gmail.com" className="font-semibold text-lg hover:text-blue-400 transition-colors pointer-events-auto">vitwent@gmail.com</a>
                   </div>
                 </div>
-
+                
                 <div className="flex items-start gap-4">
-                  <div className="bg-emerald-500/10 p-3 rounded-xl text-emerald-400 border border-emerald-500/20">
+                  <div className="bg-white/10 p-3 rounded-lg text-blue-400">
                     <MapPin size={24} />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">{t.contact.address}</p>
-                    <p className="font-semibold text-white">Gen. Tadeusza Pełczyńskiego 9</p>
-                    <p className="font-semibold text-white">01-471 Warszawa</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wider">{t.contact.address}</p>
+                    <p className="font-semibold">Gen. Tadeusza Pełczyńskiego 9</p>
+                    <p className="font-semibold">01-471 Warszawa</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-purple-500/10 p-3 rounded-xl text-purple-400 border border-purple-500/20">
-                    <FileText size={24} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">{t.contact.nip}</p>
-                    <p className="font-semibold text-white">5223313135</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="bg-orange-500/10 p-3 rounded-xl text-orange-400 border border-orange-500/20">
+                  <div className="bg-white/10 p-3 rounded-lg text-blue-400">
                     <Clock size={24} />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">{t.contact.hours}</p>
-                    <p className="font-medium text-slate-300">Pn - Pt: 8:00 - 18:00</p>
-                    <p className="font-medium text-slate-300">Sob: 9:00 - 14:00</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wider">{t.contact.hours}</p>
+                    <p className="font-semibold">{t.contact.hours_wk}</p>
+                    <p className="font-semibold">{t.contact.hours_sat}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-3 rounded-lg text-blue-400">
+                    <Map size={24} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 uppercase tracking-wider">{t.contact.company_data}</p>
+                    <p className="font-semibold">NIP: 5223313135</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-3 rounded-lg text-blue-400">
+                    <Facebook size={24} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 uppercase tracking-wider">{t.contact.facebook}</p>
+                    <a href="https://www.facebook.com/vit.went/?locale=pl_PL" target="_blank" rel="noopener noreferrer" className="font-semibold text-lg hover:text-blue-400 transition-colors pointer-events-auto">
+                      Vit-Went
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Form & Map */}
-          <div className="lg:w-7/12 flex flex-col">
-             {/* Google Map Embed - Pointing to Warsaw */}
-             <div className="h-64 w-full filter grayscale contrast-125 brightness-75 border-b border-white/10 relative group">
-                <div className="absolute inset-0 bg-blue-900/10 z-10 pointer-events-none"></div>
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2443.123456789!2d20.910!3d52.240!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecb6a12345678%3A0x1234567890abcdef!2sGen.+Tadeusza+Pe%C5%82czy%C5%84skiego+9%2C+01-471+Warszawa!5e0!3m2!1spl!2spl!4v1709555555555!5m2!1spl!2spl" 
-                  width="100%" 
-                  height="100%" 
-                  style={{border:0}} 
-                  allowFullScreen={true} 
-                  loading="lazy" 
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="opacity-80 group-hover:opacity-100 transition-opacity"
-                ></iframe>
-             </div>
+          {/* Direct Contact Buttons & Map */}
+          <div className="lg:w-7/12 bg-slate-50 relative z-20 flex flex-col">
+            <div className="p-10 lg:p-16 flex-1 flex flex-col justify-center items-center text-center relative z-30 bg-white">
+              <div className="max-w-md w-full">
+                <h3 className="text-3xl font-bold text-slate-900 mb-4">{t.contact.direct_title}</h3>
+                <p className="text-slate-600 mb-10 text-lg">
+                  {t.contact.direct_desc}
+                </p>
 
-             <div className="p-10 lg:p-12 bg-slate-900/30 flex-1">
-                {submitted ? (
-                  <div className="h-full flex flex-col items-center justify-center text-center py-12">
-                     <div className="w-20 h-20 bg-green-500/10 text-green-400 rounded-full flex items-center justify-center mb-6 border border-green-500/20">
-                       <Send size={32} />
-                     </div>
-                     <h3 className="text-2xl font-bold text-white mb-2">{t.contact.form.success}</h3>
-                     <p className="text-slate-400">{t.contact.form.successDesc}</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.contact.form.name}</label>
-                        <input required type="text" className="w-full px-4 py-3 rounded-lg bg-slate-950/50 border border-white/10 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder-slate-600" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.contact.form.phone}</label>
-                        <input required type="tel" className="w-full px-4 py-3 rounded-lg bg-slate-950/50 border border-white/10 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder-slate-600" />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.contact.form.message}</label>
-                      <textarea required rows={3} className="w-full px-4 py-3 rounded-lg bg-slate-950/50 border border-white/10 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder-slate-600"></textarea>
-                    </div>
-                    <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-4 rounded-lg hover:shadow-lg hover:shadow-cyan-500/20 transition-all uppercase tracking-wider text-sm">
-                      {t.contact.form.send}
-                    </button>
-                  </form>
-                )}
-             </div>
+                <div className="space-y-4 w-full">
+                  <a 
+                    href="tel:+48660321872"
+                    className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-5 rounded-xl shadow-lg shadow-blue-600/20 transition-all hover:scale-[1.02] active:scale-[0.98] text-xl cursor-pointer pointer-events-auto z-50"
+                  >
+                    <Phone size={24} />
+                    {t.contact.btn_call}
+                  </a>
+                  
+                  <a 
+                    href="mailto:vitwent@gmail.com"
+                    className="flex items-center justify-center gap-3 w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-5 rounded-xl border border-slate-200 transition-all hover:scale-[1.02] active:scale-[0.98] text-lg cursor-pointer pointer-events-auto z-50"
+                  >
+                    <Mail size={24} />
+                    {t.contact.btn_email}
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <div className="h-64 w-full border-t border-slate-200 relative z-10">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2441.9595148467674!2d20.9116739!3d52.2629781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecb08d062b54f%3A0x3e69608000000000!2sGen.%20Tadeusza%20Pe%C5%82czy%C5%84skiego%209%2C%2001-471%20Warszawa!5e0!3m2!1spl!2spl!4v1708440000000!5m2!1spl!2spl" 
+                width="100%" 
+                height="100%" 
+                style={{border:0, pointerEvents: 'auto'}} 
+                allowFullScreen={true} 
+                loading="lazy"
+                title="Mapa Vit-Went"
+              ></iframe>
+            </div>
           </div>
         </div>
       </div>
